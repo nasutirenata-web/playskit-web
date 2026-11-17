@@ -188,6 +188,18 @@ footer{border-top:2px solid transparent!important;border-image:var(--gold-foil) 
 .case.next::after{background:linear-gradient(to top,rgba(7,6,5,.7) 5%,transparent 50%)}
 .cnav{display:flex;gap:12px;justify-content:center;margin-top:14px}
 .cnav .btn{font-family:var(--sans);font-size:20px;padding:8px 22px;cursor:pointer;color:var(--cream)}
+/* LED: tubos de luz limpios, sin textura ni brillo de papel */
+:root{--led:0 0 3px #fff6d6,0 0 10px #ffd36a,0 0 28px rgba(227,182,74,.65),0 0 70px rgba(227,182,74,.28),inset 0 0 12px rgba(227,182,74,.3);--led-s:0 0 3px #fff6d6,0 0 9px #ffd36a,0 0 22px rgba(227,182,74,.55)}
+nav,.panel,.case,.card,.plan,.btn,.tile,.sw{border:2px solid #ffeab0!important;background-image:linear-gradient(var(--fill,#0b0907),var(--fill,#0b0907))!important;background-origin:padding-box!important;background-clip:padding-box!important;background-size:auto!important;box-shadow:var(--led)}
+.tile{background-image:radial-gradient(circle at 50% 40%,#2a1f0a,#0d0b07 70%)!important}
+.brand .tile{box-shadow:var(--led-s)}
+.btn.solid{background-image:none!important;background-color:#f6dc8e!important;border-color:#fff6d6!important;color:#1a1204;box-shadow:0 0 4px #fff6d6,0 0 20px #ffd36a,0 0 50px rgba(227,182,74,.55)}
+.btn.solid:hover{box-shadow:0 0 6px #fff6d6,0 0 28px #ffd36a,0 0 70px rgba(227,182,74,.75)}
+.plan.feat,.cases .case[data-pos="0"]{box-shadow:var(--led)}
+.sw button.on{background-image:none;background-color:#f6dc8e;color:#1a1204}
+h1 em,h2 em,.manifesto em,.plan .price{background-image:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#ffeab0!important;-webkit-text-fill-color:#ffeab0;text-shadow:0 0 5px rgba(255,214,120,.9),0 0 18px rgba(227,182,74,.75),0 0 44px rgba(227,182,74,.45)!important;filter:none!important}
+#prog{background-image:none;background-color:#ffeab0;box-shadow:0 0 6px #fff6d6,0 0 18px #ffd36a}
+body::after{opacity:.035}
 @media(max-width:820px){
   nav .links{display:none}
   .hero-grid,.cases,.inc,.plans,.steps,.fx{grid-template-columns:1fr}
