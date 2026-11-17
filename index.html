@@ -129,6 +129,48 @@ footer{padding:36px 0 50px;text-align:center;color:var(--mute);font-size:14px;bo
 
 .rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
+/* ORO QUEMADO: bordes de pin esmaltado, dorado gastado como papel viejo */
+:root{
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .22 0 0 0 0 .13 0 0 0 0 .02 0 0 0 -3 1.55'/%3E%3C/filter%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .93 0 0 0 0 .7 0 0 0 3.2 -1.9'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23a)'/%3E%3Crect width='260' height='260' filter='url(%23b)'/%3E%3C/svg%3E");
+  --gold-foil:linear-gradient(120deg,#7a5410 0%,#e9c261 16%,#a8791f 30%,#fff1b8 46%,#b98a26 60%,#e3b64a 76%,#6f4b0c 100%);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(90,45,5,.3) 100%)}
+body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;background-image:var(--grain);opacity:.07;mix-blend-mode:screen}
+nav,.panel,.case,.card,.plan,.btn,.tile{--fill:#0b0907;border:3px solid transparent!important;
+  background-image:linear-gradient(var(--fill),var(--fill)),var(--noise),var(--gold-foil)!important;
+  background-origin:padding-box,border-box,border-box;background-clip:padding-box,border-box,border-box;background-size:auto,260px 260px,auto;
+  background-color:transparent!important;backdrop-filter:none;-webkit-backdrop-filter:none}
+nav{--fill:#0a0806;border-width:3px!important}
+.btn{border-width:2px!important}
+.btn.solid{background-image:var(--noise),var(--gold-foil)!important;background-origin:border-box;background-clip:border-box;background-size:260px 260px,auto;color:#1a1204}
+.btn.ghost{--fill:#0a0806}
+.tile{--fill:radial-gradient(circle at 50% 40%,#2a1f0a,#0d0b07 70%)}
+.tile{background-image:radial-gradient(circle at 50% 40%,#2a1f0a,#0d0b07 70%),var(--noise),var(--gold-foil)!important}
+.card:hover,.plan.feat{border-color:transparent!important}
+.card:hover{box-shadow:0 0 40px -6px var(--c)}
+.case{--fill:#0e0c09}
+.plan{--fill:#0c0a07}
+.card{--fill:#0c0a07}
+/* texto y líneas en oro quemado */
+h2 em,.manifesto em,.plan .price{background-image:var(--noise),var(--gold-foil);background-size:260px 260px,auto;-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;filter:drop-shadow(0 0 22px rgba(227,182,74,.35))}
+.s::before{content:"";position:absolute;top:0;left:50%;width:min(1072px,calc(100% - 48px));height:2px;transform:translateX(-50%);background-image:var(--noise),var(--gold-foil);background-size:260px 260px,auto;opacity:.55}
+.faq details{border-top:2px solid transparent!important;border-image:var(--gold-foil) 1}
+.faq details:last-child{border-bottom:0!important}
+footer{border-top:2px solid transparent!important;border-image:var(--gold-foil) 1}
+/* interactividad */
+#prog{position:fixed;top:0;left:0;right:0;height:3px;z-index:70;transform-origin:0 50%;transform:scaleX(0);background-image:var(--noise),var(--gold-foil);background-size:260px 260px,auto;box-shadow:0 0 14px rgba(227,182,74,.8)}
+#cl{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;z-index:1;pointer-events:none;border-radius:50%;background:radial-gradient(closest-side,rgba(227,182,74,.17),rgba(227,182,74,.05) 55%,transparent);mix-blend-mode:screen;opacity:0;transition:opacity .4s;will-change:transform}
+.tilt{transform-style:preserve-3d;will-change:transform}
+.panel{perspective:900px}
+.panel .tile{cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.panel .tile:active{cursor:grabbing}
+.hint{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:center;margin-top:14px}
+.sw{display:inline-flex;gap:0;margin:-24px 0 34px;border:2px solid transparent;border-radius:99px;background-image:linear-gradient(#0a0806,#0a0806),var(--noise),var(--gold-foil);background-origin:padding-box,border-box,border-box;background-clip:padding-box,border-box,border-box;background-size:auto,260px 260px,auto;padding:3px}
+.sw button{font:500 14px var(--sans);color:var(--mute);background:transparent;border:0;padding:9px 20px;border-radius:99px;cursor:pointer;transition:background .25s,color .25s}
+.sw button.on{background-image:var(--noise),var(--gold-foil);background-size:260px 260px,auto;color:#1a1204}
+.plan .price,.plan .ars{transition:opacity .2s,transform .2s}
+.plan.sw-out .price,.plan.sw-out .ars{opacity:0;transform:translateY(6px)}
 @media(max-width:820px){
   nav .links{display:none}
   .hero-grid,.cases,.inc,.plans,.steps,.fx{grid-template-columns:1fr}
@@ -147,6 +189,8 @@ footer{padding:36px 0 50px;text-align:center;color:var(--mute);font-size:14px;bo
 </head>
 <body>
 <div class="grid-bg"></div>
+<div id="prog"></div>
+<div id="cl" aria-hidden="true"></div>
 
 <nav>
   <a class="brand" href="#top" aria-label="Playskit"><span class="tile"><img src="img/pin-t.png" alt="Playskit"></span></a>
@@ -170,6 +214,7 @@ footer{padding:36px 0 50px;text-align:center;color:var(--mute);font-size:14px;bo
         </div>
         <aside class="panel" aria-label="Vista previa">
           <span class="tile"><img src="img/pin-t.png" alt="Logo Playskit: pin estrella negro con borde dorado"></span>
+          <p class="hint">Arrastrá el pin y girá</p>
           <div class="row"><span><span class="dot"></span>Online</span><b>playskit.dj</b></div>
         </aside>
       </div>
@@ -241,10 +286,11 @@ footer{padding:36px 0 50px;text-align:center;color:var(--mute);font-size:14px;bo
     <div class="wrap">
       <span class="mono rv">05 — Planes</span>
       <h2 class="rv">Elegí <em>cómo arrancar.</em></h2>
+      <div class="sw rv" role="group" aria-label="Moneda"><button class="on" data-m="p">Pesos</button><button data-m="u">Dólares</button></div>
       <div class="plans">
-        <div class="plan rv"><h3>Professional</h3><div class="price">$167.200</div><div class="ars">US$100 · pesos argentinos</div>
+        <div class="plan rv"><h3>Professional</h3><div class="price" data-p="$167.200" data-u="US$100">$167.200</div><div class="ars" data-p="US$100 · pesos argentinos" data-u="$167.200 · pesos argentinos">US$100 · pesos argentinos</div>
           <ul class="ul"><li>Diseño a medida con tu marca</li><li>Bio, sets, flyers y rider</li><li>Booking por WhatsApp</li><li>PDF presskit</li><li>Dominio propio el primer año</li></ul></div>
-        <div class="plan feat rv"><h3>Premium</h3><div class="price">$334.400</div><div class="ars">US$200 · pesos argentinos</div>
+        <div class="plan feat rv"><h3>Premium</h3><div class="price" data-p="$334.400" data-u="US$200">$334.400</div><div class="ars" data-p="US$200 · pesos argentinos" data-u="$334.400 · pesos argentinos">US$200 · pesos argentinos</div>
           <ul class="ul"><li>Todo Professional</li><li>Diseño exclusivo con efecto firma</li><li>Textos redactados por nosotras</li><li>Versión en inglés</li><li>Estadísticas y 90 días de soporte</li></ul></div>
       </div>
       <p class="falta rv" style="margin-top:16px">Pesos al dólar CCL del 17/11/2026 ($1.672). Pueden variar.</p>
@@ -322,6 +368,73 @@ footer{padding:36px 0 50px;text-align:center;color:var(--mute);font-size:14px;bo
     gl.uniform2f(uR,c.width,c.height);gl.uniform1f(uT,(performance.now()-t0)/1000);gl.uniform2f(uM,mx*c.width,my*c.height);
     gl.drawArrays(gl.TRIANGLES,0,3);
   })();
+})();
+</script>
+<script>
+(function(){
+  var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  var bar=document.getElementById('prog');
+  function sp(){var h=document.documentElement,m=h.scrollHeight-innerHeight;bar.style.transform='scaleX('+(m>0?Math.min(1,scrollY/m):0)+')'}
+  addEventListener('scroll',sp,{passive:true});sp();
+
+  var plans=document.querySelectorAll('.plan'),btns=document.querySelectorAll('.sw button');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    var m=b.getAttribute('data-m');
+    btns.forEach(function(x){x.classList.toggle('on',x===b)});
+    plans.forEach(function(p){
+      p.classList.add('sw-out');
+      setTimeout(function(){
+        p.querySelectorAll('[data-p]').forEach(function(e){e.textContent=e.getAttribute('data-'+m)});
+        p.classList.remove('sw-out');
+      },180);
+    });
+  })});
+
+  if(rm||!fine)return;
+
+  var cl=document.getElementById('cl'),cx=innerWidth/2,cy=innerHeight/3,tx=cx,ty=cy;
+  addEventListener('pointermove',function(e){tx=e.clientX;ty=e.clientY;cl.style.opacity=1});
+  (function f(){cx+=(tx-cx)*.12;cy+=(ty-cy)*.12;cl.style.transform='translate('+cx+'px,'+cy+'px)';requestAnimationFrame(f)})();
+
+  document.querySelectorAll('.card,.plan,.case').forEach(function(el){
+    el.classList.add('tilt');
+    el.addEventListener('pointermove',function(e){
+      var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      el.style.transition='transform .12s';el.style.transitionDelay='0ms';
+      el.style.transform='perspective(900px) rotateX('+(-y*7).toFixed(2)+'deg) rotateY('+(x*9).toFixed(2)+'deg) translateY(-4px)';
+    });
+    el.addEventListener('pointerleave',function(){
+      el.style.transition='transform .6s cubic-bezier(.2,.7,.2,1)';el.style.transform='';
+    });
+  });
+
+  document.querySelectorAll('.btn').forEach(function(b){
+    b.addEventListener('pointermove',function(e){
+      var r=b.getBoundingClientRect();
+      b.style.transition='transform .1s';
+      b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.22).toFixed(1)+'px,'+((e.clientY-r.top-r.height/2)*.3).toFixed(1)+'px)';
+    });
+    b.addEventListener('pointerleave',function(){b.style.transition='transform .5s cubic-bezier(.2,.7,.2,1)';b.style.transform=''});
+  });
+
+  var pin=document.querySelector('.panel .tile');
+  if(pin){
+    var ang=0,vel=0,drag=false,lastX=0,idle=0;
+    pin.addEventListener('pointerdown',function(e){drag=true;lastX=e.clientX;vel=0;pin.setPointerCapture(e.pointerId)});
+    pin.addEventListener('pointermove',function(e){if(!drag)return;var d=e.clientX-lastX;lastX=e.clientX;ang+=d*.8;vel=d*.8;idle=0});
+    function end(){drag=false}
+    pin.addEventListener('pointerup',end);pin.addEventListener('pointercancel',end);
+    (function loop(){
+      if(!drag){
+        ang+=vel;vel*=.94;idle++;
+        if(Math.abs(vel)<.3&&idle>40){var t=Math.round(ang/360)*360;ang+=(t-ang)*.06}
+      }
+      pin.style.transform='rotateY('+ang.toFixed(2)+'deg)';
+      requestAnimationFrame(loop);
+    })();
+  }
 })();
 </script>
 </body>
