@@ -174,6 +174,9 @@ footer{border-top:2px solid transparent!important;border-image:var(--gold-foil) 
 .sw button.on{background-image:var(--noise),var(--gold-foil);background-size:260px 260px,auto;color:#1a1204}
 .plan .price,.plan .ars{transition:opacity .2s,transform .2s}
 .plan.sw-out .price,.plan.sw-out .ars{opacity:0;transform:translateY(6px)}
+/* luz LED ondulada */
+.s::before{height:28px!important;top:-14px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='28' viewBox='0 0 240 28'%3E%3Cpath d='M0 14 C30 0 60 0 90 14 S150 28 180 14 S225 2 240 14' fill='none' stroke='%23f3d27a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")!important;background-size:240px 28px!important;background-repeat:repeat-x!important;opacity:.9!important;filter:drop-shadow(0 0 5px rgba(243,210,122,.95)) drop-shadow(0 0 16px rgba(227,182,74,.6));animation:wv 14s linear infinite}
+@keyframes wv{to{background-position-x:240px}}
 /* carrusel 3D de casos */
 .cases{display:block;position:relative;height:min(540px,122vw);perspective:1500px}
 .cases .case{position:absolute;left:50%;top:0;width:min(380px,74vw);margin-left:calc(min(380px,74vw) / -2);aspect-ratio:4/5;
@@ -195,7 +198,7 @@ footer{border-top:2px solid transparent!important;border-image:var(--gold-foil) 
 @media(prefers-reduced-motion:reduce){
   .rv{opacity:1;transform:none;transition:none}
   html{scroll-behavior:auto}
-  .dot,.tile,.tile::after{animation:none}
+  .dot,.tile,.tile::after,.s::before{animation:none}
   #luz{display:none}
   .hero{background:radial-gradient(ellipse at 60% 40%,rgba(227,182,74,.28),transparent 60%)}
 }
@@ -355,18 +358,22 @@ footer{border-top:2px solid transparent!important;border-image:var(--gold-foil) 
   var vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
   var fs=[
   'precision highp float;uniform vec2 R;uniform float T;uniform vec2 M;',
-  'float blob(vec2 p,vec2 c,float r){vec2 d=p-c;return r*r/(dot(d,d)+.0008);}',
+  'float led(vec2 p,float y0,float amp,float fr,float sp,float ph,float bend,float t,out float core){',
+  ' float x=p.x;',
+  ' float y=y0+bend*x*x*.5-bend*.1+amp*sin(x*fr+t*sp+ph)+amp*.42*sin(x*fr*2.3-t*sp*1.4+ph*1.7);',
+  ' float d=abs(p.y-y);',
+  ' core=(1.-smoothstep(0.,.012,d))+(1.-smoothstep(0.,.03,d))*.35;',
+  ' return exp(-d*14.)*.5+exp(-d*4.5)*.16;}',
   'void main(){',
-  ' vec2 uv=(gl_FragCoord.xy*2.-R)/R.y; float t=T*.28;',
-  ' vec2 m=(M*2.-R)/R.y;',
-  ' float fa=blob(uv,vec2(.55+.45*sin(t*1.1),.25*cos(t*1.3)+.1),.30)+blob(uv,m,.24);',
-  ' float fb=blob(uv,vec2(-.6+.35*cos(t*.9),-.2+.4*sin(t*1.2)),.28)+blob(uv,vec2(-.2+.2*sin(t*.6),.5+.1*cos(t*1.4)),.18);',
-  ' float fc=blob(uv,vec2(.15*sin(t*1.7)+.2,.45*cos(t*.8)-.3),.24)+blob(uv,vec2(1.0+.2*sin(t*.7),-.4+.3*cos(t*1.5)),.22);',
-  ' vec3 gold=vec3(.95,.74,.28),cyan=vec3(.98,.84,.45),vio=vec3(.78,.52,.14),cream=vec3(1.,.94,.78);',
-  ' vec3 col=vec3(0.);',
-  ' col+=gold*(smoothstep(.1,.9,fa)*.45+smoothstep(.55,1.1,fa)*.7)+cream*smoothstep(1.4,2.6,fa)*.8;',
-  ' col+=cyan*(smoothstep(.1,.9,fb)*.4+smoothstep(.55,1.1,fb)*.6)+vec3(.85,1.,1.)*smoothstep(1.5,2.7,fb)*.6;',
-  ' col+=vio*(smoothstep(.1,.9,fc)*.45+smoothstep(.55,1.1,fc)*.6)+vec3(1.,.9,1.)*smoothstep(1.5,2.7,fc)*.5;',
+  ' vec2 uv=(gl_FragCoord.xy*2.-R)/R.y;float t=T*.5;vec2 m=(M*2.-R)/R.y;',
+  ' vec3 gold=vec3(.95,.74,.28),deep=vec3(.7,.46,.1),cream=vec3(1.,.95,.8);',
+  ' vec3 col=vec3(0.);float c1;float g;',
+  ' float boost=1.+.9*exp(-length(uv-m)*1.8);',
+  ' for(int i=0;i<5;i++){float fi=float(i);',
+  '  g=led(uv,-.55+fi*.3,.09+.02*fi,1.5+.25*fi,.8+.12*fi,fi*1.3,.22-.11*fi,t,c1);',
+  '  float k=(.55+.45*sin(t*.6+fi*2.))*boost;',
+  '  col+=(deep*g*1.1+gold*g*.7+cream*c1*.95)*k;}',
+  ' col*=.9;',
   ' gl_FragColor=vec4(col,1.);}'
   ].join('\n');
   function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o}
